@@ -1,0 +1,8 @@
+# Ignore all artefacts
+build/
+out/
+
+# Ignore Gradle files / Gradle wrapper
+.gradle/
+gradle/
+gradlew*
