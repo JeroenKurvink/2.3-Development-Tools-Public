@@ -1,0 +1,58 @@
+apply plugin: 'java'
+apply plugin: 'checkstyle'
+apply plugin: 'findbugs'
+apply plugin: 'jacoco'
+
+sourceSets {
+    main {
+        java {
+            srcDirs = ['src/main']
+        }
+        
+        test {
+            java.srcDirs = ['src/test']
+        }      
+    }
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    testCompile group: 'junit', name: 'junit', version: '4.12'
+}
+
+test {
+    ignoreFailres = true
+} 
+//checkstyle plugin default to version 5.6
+//so we need to force it to download the newest (2016-12-31) version
+checkstyle {
+    toolVersion = "7.4"
+    sourceSets = [sourceSets.main]  // we don't want to check our unit tests
+    showViolations = true
+    ignoreFailures = true    
+}
+
+findbugs {
+  ignoreFailures = true
+  toolVersion = "+"
+  sourceSets = [sourceSets.main]
+  effort = "max"
+}
+
+jacocoTestReport {
+    reports {
+        html.enabled = true;
+        xml.enabled = true;
+        csv.enabled = false;
+    }
+}
+
+jar {
+    manifest {
+        attributes 'Implementation-Title': 'Zoo', 'Implementation-Version': 1
+        attributes 'Main-Class': 'CLI'
+    }
+}
